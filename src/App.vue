@@ -1,73 +1,61 @@
 <template>
-    <div id="app">
-        <div v-if="loggedIn">
-            <span>Logged in</span>
-            <button @click="signOut">Sign out</button>
-        </div>
-        <div id="nav">
-            <div v-if="isLoggedIn()">
-                <router-link to="/">Home</router-link>|
-                <router-link to="/about">About</router-link>|
-                <router-link to="/register">Register New User</router-link>|
-            </div>
-        </div>
-        <router-view />
-    </div>
+  <v-app>
+    <v-app-bar app color="white" v-if="isLoggedIn()">
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
+
+      <v-spacer />
+      <v-toolbar-title>JintarKop</v-toolbar-title>
+      <v-spacer />
+
+      <!-- <v-btn icon>
+        <v-icon></v-icon>
+      </v-btn>-->
+    </v-app-bar>
+
+    <v-content>
+      <router-view />
+      <!-- <HelloWorld /> -->
+    </v-content>
+
+    <v-bottom-navigation app value="1" grow elevation="24" color="teal" v-if="isLoggedIn()">
+      <v-btn to="/">
+        <span>Hoem</span>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+
+      <v-btn to="overview">
+        <span>Overview</span>
+        <v-icon>mdi-information</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+  </v-app>
 </template>
 
 <script>
 import * as firebase from "firebase/app";
 import "firebase/auth";
 
-// import TopHeader from "./components/TopHeader";
+// import HelloWorld from "./components/HelloWorld";
 
 export default {
-    data() {
-        return {
-            loggedIn: false
-        };
-    },
-    created() {
-        firebase.auth().onAuthStateChanged(user => {
-            this.loggedIn = !!user;
-        });
-    },
-    methods: {
-        async signOut() {
-            await firebase.auth().signOut();
-            // .then((this.error = ""));
-            // .catch(err => {
-            //     this.error = err;
-            //     // console.log(err);
-            // });
-            await this.$router.replace({ name: "Login" });
-        },
-        isLoggedIn() {
-            return firebase.auth().currentUser;
-        }
+  name: "App",
+
+  // components: {
+  //   HelloWorld
+  // },
+
+  data: () => ({
+    loggedIn: false
+  }),
+  created() {
+    firebase.auth().onAuthStateChanged(user => {
+      this.loggedIn = !!user;
+    });
+  },
+  methods: {
+    isLoggedIn() {
+      return firebase.auth().currentUser;
     }
+  }
 };
 </script>
-
-<style lang="scss">
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-}
-
-#nav {
-    padding: 30px;
-
-    a {
-        font-weight: bold;
-        color: #2c3e50;
-
-        &.router-link-exact-active {
-            color: #42b983;
-        }
-    }
-}
-</style>
