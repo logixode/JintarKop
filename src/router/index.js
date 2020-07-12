@@ -24,7 +24,7 @@ const routes = [
   },
   {
     path: "/register",
-    name: "Register",
+    name: "Tambah User Baru",
     component: Register
   },
   {

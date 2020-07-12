@@ -11,6 +11,16 @@
         </v-list-item-content>
       </v-list-item>
 
+      <v-list-item link to="/register">
+        <v-list-item-icon>
+          <v-icon>mdi-account-multiple-plus</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>Tambah User Baru</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
       <v-list-item link @click="signOut">
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
@@ -32,12 +42,6 @@ export default {
   methods: {
     async signOut() {
       await firebase.auth().signOut();
-      // .then((this.error = ""));
-      // .catch(err => {
-      //     this.error = err;
-      //     // console.log(err);
-      // });
-      await this.$router.replace({ name: "Login" });
     }
   }
 };
