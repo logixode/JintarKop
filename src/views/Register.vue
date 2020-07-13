@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Tambahkan user baru</h3>
-    <v-form ref="form" v-model="valid" @submit.prevent="submit" lazy-validation>
+    <v-form ref="form" @submit.prevent="submit" lazy-validation>
       <v-text-field v-model="name" :counter="10" :rules="nameRules" label="Nama Panggilan" required></v-text-field>
 
       <v-text-field
@@ -11,7 +11,7 @@
         label="Password"
         required
       ></v-text-field>
-      <v-btn block large color="primary" class="mt-5" type="submit">Tambahkan</v-btn>
+      <v-btn block large dark color="brown" class="mt-5" type="submit">Tambahkan</v-btn>
     </v-form>
 
     <div v-if="error" class="error">{{ error.message }}</div>
@@ -55,16 +55,7 @@ export default {
   data: () => ({
     name: "",
     password: "",
-    error: "",
-    nameRules: [
-      v => !!v || "Nama belum diisi",
-      v => (v && v.length <= 10) || "Nama harus kurang dari 10 huruf",
-      v => (v || "").indexOf(" ") < 0 || "Tidak boleh ada spasi"
-    ],
-    passwordRules: [
-      v => !!v || "Password belum diisi",
-      v => (v || "").indexOf(" ") < 0 || "Tidak boleh ada spasi"
-    ]
+    error: ""
   })
 };
 </script>

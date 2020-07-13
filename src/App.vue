@@ -1,18 +1,25 @@
 <template>
   <v-app class="red">
-    <v-app-bar app dark color="#FDAE20" v-if="showAppBar">
+    <v-app-bar
+      app
+      :dark="dark ? true : false"
+      :color="dark ? '#FDAE20' : 'white'"
+      :elevation="dark ? '3' : '0'"
+      v-if="showAppBar"
+    >
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
 
-      <v-btn icon large v-if="showBackButton" @click="$router.go(-1)">
-        <v-icon>mdi-chevron-left</v-icon>
+      <v-btn icon large v-if="showBackButton" @click="goBack()">
+        <v-icon v-if="cantGoBack">mdi-home</v-icon>
+        <v-icon v-else>mdi-chevron-left</v-icon>
       </v-btn>
       <!-- <v-spacer /> -->
       <v-toolbar-title>{{ routeName }}</v-toolbar-title>
       <v-spacer />
 
-      <!-- <v-btn icon>
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>-->
+      <v-btn icon to="/notification">
+        <v-icon>mdi-bell</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-content>
@@ -55,6 +62,7 @@ export default {
   // },
 
   data: () => ({
+    dark: true,
     activeBtn: 1,
     loggedIn: false,
     showAppBar: false,
@@ -66,10 +74,14 @@ export default {
   watch: {
     $route() {
       this.showBar();
+      this.canGoBack();
+      // console.log(this.$r outer.go(-1));
       // console.log("TO : " + to.path);
     }
   },
   created() {
+    this.canGoBack();
+    console.log(this.cantGoBack);
     this.showBar();
     firebase.auth().onAuthStateChanged(user => {
       this.loggedIn = !!user;
@@ -78,6 +90,17 @@ export default {
   methods: {
     showBar() {
       let route = this.$route;
+
+      // app bar
+      if (
+        // route.path != "/" &&
+        // route.path != "/overview" &&
+        route.path != "/login"
+      ) {
+        this.showAppBar = true;
+      } else this.showAppBar = false;
+
+      // bottom bar
       if (
         (this.isLoggedIn() && route.path == "/") ||
         route.path == "/overview"
@@ -85,20 +108,16 @@ export default {
         this.showBottomBar = true;
       } else this.showBottomBar = false;
 
-      if (
-        route.path != "/" &&
-        // route.path != "/overview" &&
-        route.path != "/login"
-      ) {
-        this.showAppBar = true;
-      } else this.showAppBar = false;
-
-      if (route.path == "/overview") {
-        this.routeName = "JintarKop";
-        this.showBackButton = false;
-      } else {
+      // back button
+      if (route.path != "/" && route.path != "/overview") {
         this.routeName = route.name;
         this.showBackButton = true;
+        this.dark = true;
+        // console.log(route);
+      } else {
+        this.routeName = "JintarKop";
+        this.showBackButton = false;
+        this.dark = false;
       }
       // console.log(route.name);
     },
@@ -114,6 +133,9 @@ body {
   overflow-x: hidden;
 }
 .theme--light.v-application {
-  background: #dfe1e281 !important;
+  background: #f5f5f5 !important;
+}
+.main-logo {
+  height: 150px;
 }
 </style>

@@ -4,31 +4,39 @@
       <div class="wave"></div>
       <div class="wave -two"></div>
       <div class="wave -three"></div>
-      <div class="title">
-        <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
+      <div class="title container px-10">
+        <img alt="Jintarkop" class="main-logo mb-3" src="../assets/logo-light.png" />
 
-        <div v-if="error" class="error">{{ error.message }}</div>
-        <form @submit.prevent="pressed">
-          <div>
-            <input v-model="email" type="email" name="email" placeholder="email" />
-          </div>
-          <div>
-            <input v-model="password" type="password" name="password" placeholder="password" />
-          </div>
-          <div>
-            <button type="submit">Login</button>
-          </div>
-        </form>
+        <v-alert class="error" v-if="error">{{ error.message }}</v-alert>
+        <v-form ref="form" @submit.prevent="pressed" lazy-validation>
+          <v-text-field
+            v-model="email"
+            :rules="emailRules"
+            name="email"
+            color="brown"
+            label="Nama Panggilan"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-model="password"
+            :counter="10"
+            :rules="passwordRules"
+            type="password"
+            name="password"
+            color="brown"
+            label="Password"
+            required
+          ></v-text-field>
+          <v-btn block dark large color="brown" class="mt-5" type="submit">Login</v-btn>
+        </v-form>
       </div>
     </div>
-    <div class="container absolute text-center my-5">
-      <v-btn class="ma-2" tile outlined color="blue" large>
+    <div class="container absolute text-center my-5 px-10">
+      <h5 class="grey--text">Atau login menggunakan metode lain</h5>
+      <v-btn class="mt-2" tile outlined color="blue" block large>
         <v-icon left>mdi-google</v-icon>Masuk dengan Google
       </v-btn>
-      <h5 class="grey--text">
-        Silahkan Login terlebih dahulu
-        <br />untuk melanjutkan
-      </h5>
     </div>
   </div>
 </template>
@@ -40,16 +48,18 @@ import "firebase/auth";
 export default {
   methods: {
     async pressed() {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then((this.error = ""))
-        .catch(err => {
-          this.error = err;
-          // console.log(err);
-        });
-      if (this.error == "") {
-        await this.$router.replace({ name: "Home" });
+      if (this.$refs.form.validate()) {
+        await firebase
+          .auth()
+          .signInWithEmailAndPassword(this.email, this.password)
+          .then((this.error = ""))
+          .catch(err => {
+            this.error = err;
+            // console.log(err);
+          });
+        if (this.error == "") {
+          await this.$router.replace({ name: "Home" });
+        }
       }
     }
   },
@@ -67,9 +77,9 @@ export default {
   bottom: 2.5%;
 }
 .wave {
-  opacity: 0.4;
+  opacity: 0.9;
   top: 3%;
-  background: #fcae1b;
+  background: #f3a215;
   width: 700px;
   height: 700px;
   margin-left: -150px;
@@ -81,20 +91,21 @@ export default {
 
 .wave.-three {
   animation: drift 8500ms infinite linear;
+  opacity: 0.5;
   position: absolute;
 }
 
 .wave.-two {
   animation: drift 7000ms infinite linear;
   position: absolute;
-  opacity: 0.4;
+  opacity: 0.7;
   background: #fcad1ba4;
 }
 
 .title {
   position: absolute;
   left: 0;
-  top: 25%;
+  top: 8%;
   width: 100%;
   z-index: 1;
   text-align: center;

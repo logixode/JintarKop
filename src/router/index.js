@@ -4,6 +4,8 @@ import Home from "../views/Home.vue";
 import Overview from "../views/Overview.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import Notification from "../views/Notification.vue";
+import Setting from "../views/Setting.vue";
 import About from "../views/About.vue";
 
 import * as firebase from "firebase/app";
@@ -36,6 +38,16 @@ const routes = [
     }
   },
   {
+    path: "/notification",
+    name: "Notifikasi",
+    component: Notification
+  },
+  {
+    path: "/setting",
+    name: "Atur Alat",
+    component: Setting
+  },
+  {
     path: "/about",
     name: "About",
     component: About
@@ -64,6 +76,7 @@ router.beforeEach((to, from, next) => {
       next("/");
     } else next("/login");
   });
+  // console.log(from);
 });
 
 export default router;
