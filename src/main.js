@@ -35,7 +35,6 @@ Vue.mixin({
       this.$router.afterEach((to, from) => {
         // console.log(from);
         if (from.name == null) {
-          // console.log(from);
           this.cantGoBack = true;
         } else this.cantGoBack = false;
       });
@@ -58,9 +57,17 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount("#app");
+firebase.auth()
+  .onAuthStateChanged((firebaseUser) => {
+    new Vue({
+      router,
+      store,
+      vuetify,
+      render: h => h(App),
+      created() {
+        if (firebaseUser) {
+          store.dispatch('autoSignIn', firebaseUser);
+        }
+      },
+    }).$mount("#app");
+  });

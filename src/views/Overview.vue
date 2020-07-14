@@ -45,13 +45,11 @@
 </template>
 
 <script>
-import * as firebase from "firebase/app";
-import "firebase/auth";
-
 export default {
   methods: {
-    async signOut() {
-      await firebase.auth().signOut();
+    signOut() {
+      this.$store.dispatch("userSignOut");
+      this.$router.replace({ name: "Login" });
     }
   }
 };

@@ -31,13 +31,20 @@
 </template>
 
 <script>
-// import * as firebase from "firebase/app";
-// import "firebase/auth";
-
 export default {
+  data: () => ({
+    name: "",
+    password: ""
+  }),
+
   methods: {
     async submit() {
       this.$refs.form.validate();
+
+      await this.$store.dispatch("userSignUp", {
+        email: this.email,
+        password: this.password
+      });
 
       // await firebase
       //   .auth()
@@ -51,12 +58,7 @@ export default {
       //   await this.$router.replace({ name: "Home" });
       // }
     }
-  },
-  data: () => ({
-    name: "",
-    password: "",
-    error: ""
-  })
+  }
 };
 </script>
 

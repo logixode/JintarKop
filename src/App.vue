@@ -24,16 +24,9 @@
 
     <v-content>
       <router-view />
-      <!-- <HelloWorld /> -->
     </v-content>
 
-    <v-bottom-navigation
-      app
-      grow
-      elevation="24"
-      color="orange"
-      v-if="showBottomBar"
-    >
+    <v-bottom-navigation app grow elevation="24" color="orange" v-if="showBottomBar">
       <v-btn to="/">
         <span>Utama</span>
         <v-icon>mdi-home</v-icon>
@@ -48,21 +41,11 @@
 </template>
 
 <script>
-import * as firebase from "firebase/app";
-import "firebase/auth";
-
-// import HelloWorld from "./components/HelloWorld";
-
 export default {
   name: "App",
 
-  // components: {
-  //   HelloWorld
-  // },
-
   data: () => ({
     dark: true,
-    loggedIn: false,
     showAppBar: false,
     showBackButton: false,
     showBottomBar: false,
@@ -73,15 +56,15 @@ export default {
     $route() {
       this.showBar();
       this.canGoBack();
+      // console.log(this.$store.state.user);
     }
   },
+
   created() {
     this.canGoBack();
     this.showBar();
-    firebase.auth().onAuthStateChanged(user => {
-      this.loggedIn = !!user;
-    });
   },
+
   methods: {
     showBar() {
       let route = this.$route;
@@ -96,10 +79,7 @@ export default {
       } else this.showAppBar = false;
 
       // bottom bar
-      if (
-        (this.isLoggedIn() && route.path == "/") ||
-        route.path == "/overview"
-      ) {
+      if (route.path == "/" || route.path == "/overview") {
         this.showBottomBar = true;
       } else this.showBottomBar = false;
 
@@ -115,9 +95,6 @@ export default {
         this.dark = false;
       }
       // console.log(route.name);
-    },
-    isLoggedIn() {
-      return firebase.auth().currentUser;
     }
   }
 };

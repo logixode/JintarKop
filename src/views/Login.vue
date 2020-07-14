@@ -6,8 +6,8 @@
     <div class="title px-10">
       <img alt="Jintarkop" class="main-logo mb-3" src="../assets/logo-light.png" />
 
-      <v-alert class="error" v-if="error">{{ error.message }}</v-alert>
-      <v-form ref="form" @submit.prevent="pressed" lazy-validation>
+      <v-alert class="error" v-if="alert">{{ error }}</v-alert>
+      <v-form ref="form" @submit.prevent="signIn" lazy-validation>
         <v-text-field
           v-model="email"
           :rules="emailRules"
@@ -40,32 +40,43 @@
 </template>
 
 <script>
-import * as firebase from "firebase/app";
-import "firebase/auth";
-
 export default {
+  data: () => ({
+    email: "",
+    password: "",
+    alert: false
+  }),
   methods: {
-    async pressed() {
+    async signIn() {
       if (this.$refs.form.validate()) {
-        await firebase
-          .auth()
-          .signInWithEmailAndPassword(this.email, this.password)
-          .then((this.error = ""))
-          .catch(err => {
-            this.error = err;
-            // console.log(err);
-          });
+        await this.$store.dispatch("userSignIn", {
+          email: this.email,
+          password: this.password
+        });
+
         if (this.error == "") {
           await this.$router.replace({ name: "Home" });
         }
       }
     }
   },
-  data: () => ({
-    email: "",
-    password: "",
-    error: ""
-  })
+  computed: {
+    error() {
+      return this.$store.state.error;
+    }
+  },
+  watch: {
+    error(value) {
+      if (value) {
+        this.alert = true;
+      }
+    },
+    alert(value) {
+      if (!value) {
+        this.$store.commit("setError", null);
+      }
+    }
+  }
 };
 </script>
 
