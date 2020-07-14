@@ -22,7 +22,8 @@ Vue.mixin({
       v => !!v || "Password belum diisi",
       v => (v || "").indexOf(" ") < 0 || "Tidak boleh ada spasi"
     ],
-    cantGoBack: true
+    cantGoBack: true,
+    // activeNavBtn: "home",
   }),
   methods: {
     goBack() {

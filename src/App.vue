@@ -29,7 +29,6 @@
 
     <v-bottom-navigation
       app
-      :value="activeBtn"
       grow
       elevation="24"
       color="orange"
@@ -63,7 +62,6 @@ export default {
 
   data: () => ({
     dark: true,
-    activeBtn: 1,
     loggedIn: false,
     showAppBar: false,
     showBackButton: false,
