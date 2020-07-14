@@ -1,5 +1,5 @@
 <template>
-  <div class="container px-5">
+  <v-container class="px-5">
     <div class="text-center">
       <img alt="Jintarkop" class="main-logo mb-3" src="../assets/logo.png" />
     </div>
@@ -18,7 +18,7 @@
 
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App" /> -->
-  </div>
+  </v-container>
 </template>
 
 <script>

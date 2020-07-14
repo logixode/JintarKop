@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <v-container class="px-5">
     <h3>Tambahkan user baru</h3>
     <v-form ref="form" @submit.prevent="submit" lazy-validation>
       <v-text-field v-model="name" :counter="10" :rules="nameRules" label="Nama Panggilan" required></v-text-field>
@@ -27,7 +27,7 @@
         <button type="submit">Register</button>
       </div>
     </form>-->
-  </div>
+  </v-container>
 </template>
 
 <script>

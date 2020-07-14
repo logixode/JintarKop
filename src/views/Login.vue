@@ -1,40 +1,38 @@
 <template>
   <div>
-    <div class="container">
-      <div class="wave"></div>
-      <div class="wave -two"></div>
-      <div class="wave -three"></div>
-      <div class="title container px-10">
-        <img alt="Jintarkop" class="main-logo mb-3" src="../assets/logo-light.png" />
+    <div class="wave"></div>
+    <div class="wave -two"></div>
+    <div class="wave -three"></div>
+    <div class="title px-10">
+      <img alt="Jintarkop" class="main-logo mb-3" src="../assets/logo-light.png" />
 
-        <v-alert class="error" v-if="error">{{ error.message }}</v-alert>
-        <v-form ref="form" @submit.prevent="pressed" lazy-validation>
-          <v-text-field
-            v-model="email"
-            :rules="emailRules"
-            name="email"
-            color="brown"
-            label="Nama Panggilan"
-            required
-          ></v-text-field>
+      <v-alert class="error" v-if="error">{{ error.message }}</v-alert>
+      <v-form ref="form" @submit.prevent="pressed" lazy-validation>
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          name="email"
+          color="brown"
+          label="Nama Panggilan"
+          required
+        ></v-text-field>
 
-          <v-text-field
-            v-model="password"
-            :counter="10"
-            :rules="passwordRules"
-            type="password"
-            name="password"
-            color="brown"
-            label="Password"
-            required
-          ></v-text-field>
-          <v-btn block dark large color="brown" class="mt-5" type="submit">Login</v-btn>
-        </v-form>
-      </div>
+        <v-text-field
+          v-model="password"
+          :counter="10"
+          :rules="passwordRules"
+          type="password"
+          name="password"
+          color="brown"
+          label="Password"
+          required
+        ></v-text-field>
+        <v-btn block dark large color="brown" class="mt-5" type="submit">Login</v-btn>
+      </v-form>
     </div>
-    <div class="container absolute text-center my-5 px-10">
+    <div class="text-center px-10">
       <h5 class="grey--text">Atau login menggunakan metode lain</h5>
-      <v-btn class="mt-2" tile outlined color="blue" block large>
+      <v-btn class="mt-2 my-5" tile outlined color="blue" block large>
         <v-icon left>mdi-google</v-icon>Masuk dengan Google
       </v-btn>
     </div>

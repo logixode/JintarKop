@@ -63,16 +63,15 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const withoutAuth = to.matched.some(record => record.meta.withoutAuth);
   if (withoutAuth) {
-    // to root
     next();
   }
   firebase.auth().onAuthStateChanged(user => {
     // console.log(user);
     // const user = firebase.auth().currentUser;
     if ((withoutAuth && !user) || (!withoutAuth && user)) {
-      // to root
       next();
     } else if (withoutAuth && user) {
+      // to root
       next("/");
     } else next("/login");
   });

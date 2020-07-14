@@ -75,13 +75,10 @@ export default {
     $route() {
       this.showBar();
       this.canGoBack();
-      // console.log(this.$r outer.go(-1));
-      // console.log("TO : " + to.path);
     }
   },
   created() {
     this.canGoBack();
-    console.log(this.cantGoBack);
     this.showBar();
     firebase.auth().onAuthStateChanged(user => {
       this.loggedIn = !!user;

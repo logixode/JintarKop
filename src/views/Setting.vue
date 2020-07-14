@@ -1,5 +1,5 @@
 <template>
-  <div class="container px-5">
+  <v-container class="px-5">
     <v-form ref="form" @submit.prevent="pressed" lazy-validation>
       <v-text-field
         v-model="jenisKopi"
@@ -33,7 +33,7 @@
       ></v-text-field>
       <v-btn block dark large color="brown" class="mt-5" type="submit">Selesai</v-btn>
     </v-form>
-  </div>
+  </v-container>
 </template>
 
 <script>

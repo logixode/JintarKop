@@ -1,7 +1,7 @@
 <template>
-  <div class="container text-center mt-5">
+  <v-container class="text-center mt-5">
     <h1>notifikasi</h1>
-  </div>
+  </v-container>
 </template>
 
 <script>
