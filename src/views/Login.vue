@@ -30,7 +30,7 @@
         <v-btn block dark large color="brown" class="mt-5" type="submit">Login</v-btn>
       </v-form>
     </div>
-    <div class="text-center px-10 my-10">
+    <div class="text-center px-10 my-15">
       <h5 class="grey--text">Atau login menggunakan metode lain</h5>
       <v-btn class="mt-2 my-5" tile outlined color="blue" block large>
         <v-icon left>mdi-google</v-icon>Masuk dengan Google
