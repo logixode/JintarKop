@@ -7,40 +7,48 @@ import axios from "axios";
 import firebase from "firebase/app";
 import vuetify from "./plugins/vuetify";
 
-Vue.mixin({
-  data: () => ({
-    emailRules: [
-      v => !!v || 'E-mail harus diisi',
-      v => /.+@.+\..+/.test(v) || 'E-mail tidak valid',
-    ],
-    nameRules: [
-      v => !!v || "Nama belum diisi",
-      v => (v && v.length <= 10) || "Nama harus kurang dari 10 huruf",
-      v => (v || "").indexOf(" ") < 0 || "Tidak boleh ada spasi"
-    ],
-    passwordRules: [
-      v => !!v || "Password belum diisi",
-      v => (v || "").indexOf(" ") < 0 || "Tidak boleh ada spasi"
-    ],
-    cantGoBack: true,
-    // activeNavBtn: "home",
-  }),
-  methods: {
-    goBack() {
-      if (!this.cantGoBack) {
-        this.$router.go(-1);
-      } else this.$router.push('/');
+Vue.mixin(
+  {
+    data: () => ({
+      emailRules: [
+        v => !!v || 'E-mail harus diisi',
+        v => /.+@.+\..+/.test(v) || 'E-mail tidak valid',
+      ],
+      nameRules: [
+        v => !!v || "Nama belum diisi",
+        v => (v && v.length <= 10) || "Nama harus kurang dari 10 huruf",
+        v => (v || "").indexOf(" ") < 0 || "Tidak boleh ada spasi"
+      ],
+      passwordRules: [
+        v => !!v || "Password belum diisi",
+        v => (v || "").indexOf(" ") < 0 || "Tidak boleh ada spasi"
+      ],
+      cantGoBack: true,
+      // activeNavBtn: "home",
+    }),
+    methods: {
+      goBack() {
+        if (!this.cantGoBack) {
+          this.$router.go(-1);
+        } else this.$router.push('/');
+      },
+      canGoBack() {
+        this.$router.afterEach((to, from) => {
+          // console.log(from);
+          if (from.name == null) {
+            this.cantGoBack = true;
+          } else this.cantGoBack = false;
+        });
+      },
     },
-    canGoBack() {
-      this.$router.afterEach((to, from) => {
-        // console.log(from);
-        if (from.name == null) {
-          this.cantGoBack = true;
-        } else this.cantGoBack = false;
-      });
-    },
-  }
-});
+    created() {
+      if (this.$route.name != "Home") {
+
+        document.title = "JintarKop - " + this.$route.name;
+      } else document.title = "JintarKop";
+    }
+  },
+);
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
