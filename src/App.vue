@@ -89,8 +89,10 @@ export default {
         this.showBackButton = true;
         this.dark = true;
         // console.log(route);
-      } else {
-        this.routeName = "JintarKop";
+      }
+      // default
+      else {
+        this.routeName = "Jemuran Pintar Kopi";
         this.showBackButton = false;
         this.dark = false;
       }
