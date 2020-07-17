@@ -10,6 +10,7 @@ import vuetify from "./plugins/vuetify";
 Vue.mixin(
   {
     data: () => ({
+      isFilled: [v => !!v || 'Harus diisi'],
       emailRules: [
         v => !!v || 'E-mail harus diisi',
         v => /.+@.+\..+/.test(v) || 'E-mail tidak valid',

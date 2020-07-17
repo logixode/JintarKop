@@ -81,6 +81,9 @@ export default {
 </script>
 
 <style scoped>
+.main-logo {
+  height: 170px;
+}
 .absolute {
   position: absolute;
   bottom: 2.5%;

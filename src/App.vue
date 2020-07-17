@@ -112,7 +112,4 @@ body {
 .theme--light.v-application {
   background: #f5f5f5 !important;
 }
-.main-logo {
-  height: 150px;
-}
 </style>
