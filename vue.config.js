@@ -2,9 +2,12 @@ module.exports = {
   transpileDependencies: ["vuetify"],
   pwa: {
     name: 'JintarKop',
-    themeColor: '#fff',
-    msTileColor: '#FFA71F',
-    appleMobileWebAppCapable: 'yes',
-    appleMobileWebAppStatusBarStyle: 'white',
+    themeColor: '#FFA71F',
+    manifestOptions: {
+      background_color: "#fff ",
+      orientation: "portrait",
+    }
+    // appleMobileW  ebAppCapable: 'yes',
+    // appleMobileWebAppStatusBarStyle: 'white',
   }
 };

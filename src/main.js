@@ -40,12 +40,11 @@ Vue.mixin(
           } else this.cantGoBack = false;
         });
       },
-    },
-    created() {
-      if (this.$route.name != "Home") {
-
-        document.title = "JintarKop - " + this.$route.name;
-      } else document.title = "JintarKop";
+      changeTitleName() {
+        if (this.$route.name != "Home") {
+          document.title = "JintarKop - " + this.$route.name;
+        } else document.title = "JintarKop";
+      }
     }
   },
 );
@@ -76,6 +75,6 @@ firebase.auth()
         if (firebaseUser) {
           store.dispatch('autoSignIn', firebaseUser);
         }
-      },
+      }
     }).$mount("#app");
   });

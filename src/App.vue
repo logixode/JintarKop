@@ -56,11 +56,14 @@ export default {
     $route() {
       this.showBar();
       this.canGoBack();
+      this.changeTitleName();
+
       // console.log(this.$store.state.user);
     }
   },
 
   created() {
+    this.changeTitleName();
     this.canGoBack();
     this.showBar();
   },
