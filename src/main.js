@@ -28,6 +28,9 @@ Vue.mixin(
       // activeNavBtn: "home",
     }),
     methods: {
+      signOut() {
+        this.$store.dispatch("userSignOut");
+      },
       goBack() {
         if (!this.cantGoBack) {
           this.$router.go(-1);

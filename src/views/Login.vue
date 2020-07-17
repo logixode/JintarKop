@@ -6,7 +6,9 @@
     <div class="title px-10">
       <img alt="Jintarkop" class="main-logo mb-3" src="../assets/logo-light.png" />
 
-      <v-alert class="error" v-if="alert">{{ error }}</v-alert>
+      <v-alert class="error" v-if="alert">
+        <small>{{ error }}</small>
+      </v-alert>
       <v-form ref="form" @submit.prevent="signIn" lazy-validation>
         <v-text-field
           v-model="email"
@@ -30,7 +32,7 @@
         <v-btn block dark large color="brown" class="mt-5" type="submit">Login</v-btn>
       </v-form>
     </div>
-    <div class="text-center px-10 my-15">
+    <div class="text-center px-10 my-15 py-5">
       <h5 class="grey--text">Atau login menggunakan metode lain</h5>
       <v-btn class="mt-2 my-5" tile outlined color="blue" block large>
         <v-icon left>mdi-google</v-icon>Masuk dengan Google
@@ -90,24 +92,25 @@ export default {
 }
 .wave {
   opacity: 0.9;
-  top: 3%;
   background: #f3a215;
   width: 700px;
   height: 700px;
   margin-left: -150px;
-  margin-top: -200px;
+  margin-top: -170px;
   transform-origin: 50% 48%;
   border-radius: 43%;
   animation: drift-data-v-26084dc2 10000ms infinite linear;
 }
 
 .wave.-three {
+  top: 5%;
   animation: drift 8500ms infinite linear;
   opacity: 0.5;
   position: absolute;
 }
 
 .wave.-two {
+  top: 2%;
   animation: drift 7000ms infinite linear;
   position: absolute;
   opacity: 0.7;

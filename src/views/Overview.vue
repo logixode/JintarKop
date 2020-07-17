@@ -45,15 +45,5 @@
 </template>
 
 <script>
-export default {
-  methods: {
-    signOut() {
-      this.$store.dispatch("userSignOut");
-      this.$router.replace({ name: "Login" });
-    }
-  }
-};
+export default {};
 </script>
-
-<style lang="scss" scoped>
-</style>
