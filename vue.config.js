@@ -3,6 +3,7 @@ module.exports = {
   pwa: {
     name: 'JintarKop',
     themeColor: '#FFA71F',
+    start_url: '/',
     manifestOptions: {
       background_color: "#fff ",
       orientation: "portrait",
