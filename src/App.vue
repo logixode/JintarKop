@@ -112,4 +112,7 @@ body {
 .theme--light.v-application {
   background: #f5f5f5 !important;
 }
+.v-item-group.v-bottom-navigation--grow .v-btn {
+  height: 55px !important;
+}
 </style>
