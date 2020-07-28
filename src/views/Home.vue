@@ -1,69 +1,81 @@
 <template>
   <v-container class="px-5">
-    <div class="text-center">
+    <div class="text-center mt-3">
       <img alt="Jintarkop" class="main-logo mb-3" src="../assets/logo.png" />
     </div>
 
-    <div class="d-flex text-center py-3">
-      <div class="flex-grow-1">
-        <h1>OFF</h1>
-        <h3>Pengering 1</h3>
-      </div>
-      <div class="flex-grow-1">
-        <h1>OFF</h1>
-        <h3>Pengering 2</h3>
-      </div>
-    </div>
-    <v-btn
-      v-if="isClosed"
-      block
-      outlined
-      color="orange"
-      class="mt-5"
-      @click="openToolCover"
-    >Tutup Penutup Alat</v-btn>
-    <v-btn
-      v-else
-      block
-      outlined
-      color="orange"
-      class="mt-5"
-      @click="openToolCover"
-    >Buka Penutup Alat</v-btn>
-    <v-btn block outlined color="brown" class="mt-5" to="/setting">Atur alat</v-btn>
+    <!-- <div class="text-center py-5">
+      <h1>OFF</h1>
+      <h4>Kondisi Pengering</h4>
+    </div>-->
+    <!-- <v-card color="white" class="px-3 mt-5 pt-5 pb-3 text-center"> -->
+    <v-row>
+      <v-col cols="6">
+        <div class="text-center">
+          <Progress
+            :transitionDuration="1450"
+            :strokeColor="value < 75 ? progressColor.blue : progressColor.brown"
+            :radius="75"
+            :strokeWidth="10"
+            :value="value"
+            class="main-progress"
+          >
+            <template v-slot:footer>
+              <b>Tingkat Kekeringan</b>
+            </template>
+          </Progress>
+        </div>
+      </v-col>
+      <v-col cols="6" class="text-center">
+        <Progress
+          :transitionDuration="1450"
+          :strokeColor="(100 - value) >= 75 ? progressColor.blue : progressColor.brown"
+          :radius="45"
+          :strokeWidth="8"
+          :value="100 - value"
+        >
+          <template v-slot:footer>
+            <b>Kadar Air</b>
+          </template>
+        </Progress>
 
-    <v-card color="white" class="px-3 mt-5 pt-4 pb-1 text-center">
-      <h3>Data Pengering 1</h3>
+        <v-btn
+          v-if="isClosed"
+          outlined
+          large
+          block
+          color="orange"
+          class="mt-5"
+          @click="openToolCover"
+        >Tutup Alat</v-btn>
+        <v-btn
+          v-else
+          large
+          outlined
+          block
+          color="orange"
+          class="p-2 mt-5"
+          @click="openToolCover"
+        >Buka Alat</v-btn>
+      </v-col>
+    </v-row>
+
+    <v-btn block large outlined color="brown" class="mt-5" to="/setting">Atur alat</v-btn>
+
+    <v-card color="white" class="px-3 mt-5 pt-5 pb-3 text-center">
+      <h3>Data Pengering</h3>
       <v-row>
-        <v-col cols="4">
-          <h4>Berat Basah</h4>
+        <v-col cols="12">
+          <h2>0 &#8451;</h2>
+          <p>Suhu Kelembapan</p>
+        </v-col>
+        <v-col cols="6">
           <h2>0 kg</h2>
+          <p>Berat Basah</p>
         </v-col>
-        <v-col cols="4">
-          <h4>Berat Kering</h4>
+        <v-col cols="6">
           <h2>0 kg</h2>
-        </v-col>
-        <v-col cols="4">
-          <h4>Kadar Air</h4>
-          <h2>0%</h2>
-        </v-col>
-      </v-row>
-
-      <v-divider class="mt-2 mb-4"></v-divider>
-
-      <h3>Data Pengering 2</h3>
-      <v-row>
-        <v-col cols="4">
-          <h4>Berat Basah</h4>
-          <h2>0 kg</h2>
-        </v-col>
-        <v-col cols="4">
-          <h4>Berat Kering</h4>
-          <h2>0 kg</h2>
-        </v-col>
-        <v-col cols="4">
-          <h4>Kadar Air</h4>
-          <h2>0%</h2>
+          <p>Berat Kering</p>
         </v-col>
       </v-row>
     </v-card>
@@ -75,11 +87,20 @@
 
 <script>
 // @ is an alias to /src
+import Progress from "easy-circular-progress";
 // import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   name: "Home",
+  components: {
+    Progress
+  },
   data: () => ({
+    progressColor: {
+      brown: "#FDAE20",
+      blue: "#108fca"
+    },
+    value: 0,
     isClosed: false
   }),
   methods: {
@@ -94,7 +115,19 @@ export default {
 </script>
 
 <style scoped>
+p {
+  margin-bottom: 0;
+}
 .main-logo {
-  height: 130px;
+  height: 120px;
+}
+</style>
+<style>
+.main-progress .percent__int {
+  font-size: 45px;
+}
+.main-progress .percent__dec,
+.main-progress .percent_sign {
+  font-size: 22px;
 }
 </style>
