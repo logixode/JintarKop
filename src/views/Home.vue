@@ -66,15 +66,15 @@
       <h3>Data Pengering</h3>
       <v-row>
         <v-col cols="12">
-          <h2>0 &#8451;</h2>
+          <h2>{{ suhuKelembapan }} &#8451;</h2>
           <p>Suhu Kelembapan</p>
         </v-col>
         <v-col cols="6">
-          <h2>0 kg</h2>
+          <h2>{{ dataBerat.basah }} kg</h2>
           <p>Berat Basah</p>
         </v-col>
         <v-col cols="6">
-          <h2>0 kg</h2>
+          <h2>{{ dataBerat.kering }} kg</h2>
           <p>Berat Kering</p>
         </v-col>
       </v-row>
@@ -95,14 +95,29 @@ export default {
   components: {
     Progress
   },
+  created() {
+    this.$store.dispatch("getHardwareData");
+  },
   data: () => ({
     progressColor: {
       brown: "#FDAE20",
       blue: "#108fca"
     },
-    value: 0,
+    // value: 0,
     isClosed: false
   }),
+  computed: {
+    value() {
+      const percentage = (this.dataBerat.kering / this.dataBerat.basah) * 100;
+      return percentage.toFixed(2);
+    },
+    suhuKelembapan() {
+      return this.$store.state.hardwareData.suhuKelembapan;
+    },
+    dataBerat() {
+      return this.$store.state.hardwareData.berat;
+    }
+  },
   methods: {
     openToolCover() {
       this.isClosed = !this.isClosed;

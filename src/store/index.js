@@ -1,15 +1,19 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from 'firebase/app';
-import "firebase/auth";
+import { hardwareDataRef } from '../firebase';
+import 'firebase/auth';
 import router from '@/router';
 
 Vue.use(Vuex);
 
+// const dataHardware = db.ref('dataHardware');
+
 export default new Vuex.Store({
   state: {
     user: null,
-    error: null
+    error: null,
+    hardwareData: {}
   },
   mutations: {
     setUser(state, payload) {
@@ -18,6 +22,9 @@ export default new Vuex.Store({
     setError(state, payload) {
       state.error = payload;
     },
+    getHardwareData(state, payload) {
+      state.hardwareData = payload;
+    }
   },
   actions: {
     userSignIn({ commit }, payload) {
@@ -56,6 +63,11 @@ export default new Vuex.Store({
       firebase.auth().signOut();
       commit('setUser', null);
       router.replace('/login');
+    },
+    getHardwareData({ commit }) {
+      hardwareDataRef.on('value', data => {
+        commit('getHardwareData', data.val());
+      });
     }
   },
   modules: {}
