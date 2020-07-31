@@ -2,18 +2,26 @@ import Vue from "vue";
 import Vuex from "vuex";
 import firebase from 'firebase/app';
 import { hardwareDataRef } from '../firebase';
+import { notificationRef } from '../firebase';
 import 'firebase/auth';
 import router from '@/router';
 
 Vue.use(Vuex);
 
-// const dataHardware = db.ref('dataHardware');
-
 export default new Vuex.Store({
   state: {
     user: null,
     error: null,
-    hardwareData: {}
+    hardwareData: {
+      berat: {
+        basah: 0,
+        kering: 0
+      },
+      jenisKopi: "",
+      suhuKelembapan: 0
+    },
+    notification: {},
+    notificationCount: 0
   },
   mutations: {
     setUser(state, payload) {
@@ -24,6 +32,9 @@ export default new Vuex.Store({
     },
     getHardwareData(state, payload) {
       state.hardwareData = payload;
+    },
+    getNotification(state, payload) {
+      state.notification.push(payload);
     }
   },
   actions: {
@@ -44,16 +55,13 @@ export default new Vuex.Store({
         });
     },
     userSignUp({ commit }, payload) {
-      commit('setLoading', true);
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(firebaseUser => {
           commit('setUser', { email: firebaseUser.user.email });
-          commit('setLoading', false);
-          router.push('/home');
+          router.push('/');
         })
         .catch(error => {
           commit('setError', error.message);
-          commit('setLoading', false);
         });
     },
     autoSignIn({ commit }, payload) {
@@ -67,6 +75,20 @@ export default new Vuex.Store({
     getHardwareData({ commit }) {
       hardwareDataRef.on('value', data => {
         commit('getHardwareData', data.val());
+      });
+    },
+    setHardwareData(commit, payload) {
+      hardwareDataRef.set({
+        berat: payload.berat,
+        jenisKopi: payload.jenisKopi,
+        suhuKelembapan: payload.suhuKelembapan
+      }).then(
+        router.push('/')
+      );
+    },
+    getNotification({ commit }) {
+      notificationRef.on('value', data => {
+        commit('getNotification', data.val());
       });
     }
   },

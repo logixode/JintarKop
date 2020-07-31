@@ -74,11 +74,11 @@
           <p>Suhu Kelembapan</p>
         </v-col>
         <v-col cols="6">
-          <h2>{{ dataBerat.basah }} kg</h2>
+          <h2>{{ dataBerat.basah/1000 }} kg</h2>
           <p>Berat Basah</p>
         </v-col>
         <v-col cols="6">
-          <h2>{{ dataBerat.kering }} kg</h2>
+          <h2>{{ dataBerat.kering/1000 }} kg</h2>
           <p>Berat Kering</p>
         </v-col>
       </v-row>

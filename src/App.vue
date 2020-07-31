@@ -18,7 +18,9 @@
       <v-spacer />
 
       <v-btn icon to="/notification">
-        <v-icon>mdi-bell</v-icon>
+        <v-badge :value="messages" color="red" dot overlap>
+          <v-icon>mdi-bell</v-icon>
+        </v-badge>
       </v-btn>
     </v-app-bar>
 
@@ -66,6 +68,12 @@ export default {
     this.changeTitleName();
     this.canGoBack();
     this.showBar();
+  },
+
+  computed: {
+    messages() {
+      return this.$store.state.notificationCount;
+    }
   },
 
   methods: {
