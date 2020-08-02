@@ -17,9 +17,12 @@
             :strokeColor="tingkatKekeringan < 75 ? progressColor.blue : progressColor.brown"
             :radius="75"
             :strokeWidth="10"
-            :value="tingkatKekeringan"
+            :value="!isOpened ? 0 : tingkatKekeringan"
             class="main-progress"
           >
+            <template v-slot:default v-if="!isOpened">
+              <b>OFF</b>
+            </template>
             <template v-slot:footer>
               <b>Tingkat Kekeringan</b>
             </template>
@@ -32,53 +35,90 @@
           :strokeColor="kadarAir >= 25 ? progressColor.blue : progressColor.brown"
           :radius="45"
           :strokeWidth="8"
-          :value="kadarAir"
+          :value="!isOpened ? 0 : kadarAir"
         >
+          <template v-slot:default v-if="!isOpened">
+            <b>OFF</b>
+          </template>
           <template v-slot:footer>
             <b>Kadar Air</b>
           </template>
         </Progress>
         <div class="row ml-1 mt-3">
-          <h4>Jenis Kopi :</h4>
+          <h4 class="text--secondary">Jenis Kopi :</h4>
           <div class="ml-1">
-            <p>{{ jenisKopi }}</p>
+            <p v-if="!isOpened">-</p>
+            <template v-else>
+              <p>{{ jenisKopi }}</p>
+            </template>
           </div>
         </div>
         <div class="row ml-1 mt-1">
-          <h4>Status :</h4>
+          <h4 class="text--secondary">Status :</h4>
           <div class="ml-1">
-            <p v-if="tingkatKekeringan <= 65">Masih basah</p>
-            <p v-else-if="tingkatKekeringan <= 92">Hampir Kering</p>
-            <p v-else>Sudah Kering</p>
+            <p v-if="!isOpened">Alat Tertutup</p>
+            <template v-else>
+              <p v-if="tingkatKekeringan <= 65">Masih basah</p>
+              <p v-else-if="tingkatKekeringan <= 95">Hampir Kering</p>
+              <p v-else>Sudah Kering</p>
+            </template>
           </div>
         </div>
       </v-col>
     </v-row>
 
-    <v-btn
-      v-if="isClosed"
-      outlined
-      block
-      color="orange"
-      class="mt-5"
-      @click="openToolCover"
-    >Tutup Alat</v-btn>
-    <v-btn v-else outlined block color="orange" class="p-2 mt-5" @click="openToolCover">Buka Alat</v-btn>
-    <v-btn block outlined color="brown" class="mt-5" to="/setting">Atur alat</v-btn>
+    <v-btn v-if="isOpened" outlined block color="orange" class="mt-5" @click="openToolCover">
+      <v-icon left>mdi-lock</v-icon>Tutup Alat
+    </v-btn>
+    <v-btn v-else block dark color="orange" class="p-2 mt-5" @click="openToolCover">
+      <v-icon left>mdi-lock-open-variant</v-icon>Buka Alat
+    </v-btn>
+    <v-btn block outlined color="brown" class="mt-5" to="/setting">
+      <v-icon left>mdi-cog</v-icon>Atur alat
+    </v-btn>
 
-    <v-card color="white" class="px-3 mt-5 pt-5 pb-3 text-center">
-      <h3>Data Pengering</h3>
+    <h4 class="mt-5 mb-2 text--secondary">Informasi Alat</h4>
+    <v-card color="white" class="px-3 pt-5 pb-3 text-center">
       <v-row>
-        <v-col cols="12">
-          <h2>{{ suhuKelembapan }} &#8451;</h2>
+        <v-col cols="6">
+          <h2>
+            <template v-if="!isOpened">-</template>
+            <template v-else>
+              {{ hardwareData.beratTimbangan }}
+              <sup>g</sup>
+            </template>
+          </h2>
+          <p>Berat Saat Ini</p>
+        </v-col>
+        <v-col cols="6">
+          <h2>
+            <template v-if="!isOpened">-</template>
+            <template v-else>
+              {{ hardwareData.suhuKelembapan }}
+              <sup>&#8451;</sup>
+            </template>
+          </h2>
+
           <p>Suhu Kelembapan</p>
         </v-col>
         <v-col cols="6">
-          <h2>{{ dataBerat.basah/1000 }} kg</h2>
+          <h2>
+            <template v-if="!isOpened">-</template>
+            <template v-else>
+              {{ dataBerat.basah/1000 }}
+              <sup>kg</sup>
+            </template>
+          </h2>
           <p>Berat Basah</p>
         </v-col>
         <v-col cols="6">
-          <h2>{{ dataBerat.kering/1000 }} kg</h2>
+          <h2>
+            <template v-if="!isOpened">-</template>
+            <template v-else>
+              {{ dataBerat.kering/1000 }}
+              <sup>kg</sup>
+            </template>
+          </h2>
           <p>Berat Kering</p>
         </v-col>
       </v-row>
@@ -100,37 +140,50 @@ export default {
     Progress
   },
   created() {
-    this.$store.dispatch("getHardwareData");
+    this.$store.dispatch("getData");
   },
   data: () => ({
     progressColor: {
       brown: "#FDAE20",
       blue: "#108fca"
-    },
-    // value: 0,
-    isClosed: false
+    }
   }),
   computed: {
-    tingkatKekeringan() {
-      const percentage = (this.dataBerat.kering / this.dataBerat.basah) * 100;
-      return percentage.toFixed(2);
-    },
     kadarAir() {
-      return (100 - this.tingkatKekeringan).toFixed(2);
+      if (this.hardwareData.beratTimbangan < this.dataBerat.kering) {
+        return "off";
+      } else {
+        const percentage =
+          ((this.hardwareData.beratTimbangan - this.dataBerat.kering) /
+            (this.dataBerat.basah - this.dataBerat.kering)) *
+          100;
+        if (percentage == 0) return 0.01;
+        else return percentage.toFixed(2);
+      }
     },
-    suhuKelembapan() {
-      return this.$store.state.hardwareData.suhuKelembapan;
+    tingkatKekeringan() {
+      if (this.kadarAir == 0) return 100;
+      else if (this.kadarAir == 100) return 0.001;
+      else return (100 - this.kadarAir).toFixed(2);
+    },
+    hardwareData() {
+      return this.$store.state.hardwareData;
     },
     dataBerat() {
-      return this.$store.state.hardwareData.berat;
+      return this.$store.state.aturData.berat;
     },
     jenisKopi() {
-      return this.$store.state.hardwareData.jenisKopi;
+      return this.$store.state.aturData.jenisKopi;
+    },
+    isOpened() {
+      return this.$store.state.alatTerbuka;
     }
   },
   methods: {
     openToolCover() {
-      this.isClosed = !this.isClosed;
+      if (this.isOpened) {
+        this.$store.dispatch("setToolData", false);
+      } else this.$store.dispatch("setToolData", true);
     }
   }
   // components: {
@@ -154,5 +207,8 @@ p {
 .main-progress .percent__dec,
 .main-progress .percent_sign {
   font-size: 22px !important;
+}
+.main-progress .percent {
+  font-size: 35px !important;
 }
 </style>
