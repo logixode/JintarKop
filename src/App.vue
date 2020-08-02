@@ -1,12 +1,6 @@
 <template>
   <v-app class="red">
-    <v-app-bar
-      app
-      :dark="dark ? true : false"
-      :color="dark ? '#FDAE20' : 'white'"
-      :elevation="dark ? '3' : '0'"
-      v-if="showAppBar"
-    >
+    <v-app-bar app elevation="0" v-if="showAppBar">
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
 
       <v-btn icon large v-if="showBackButton" @click="goBack()">
@@ -26,6 +20,12 @@
 
     <v-content>
       <router-view />
+      <v-snackbar v-model="snackbar">
+        {{ snackbarMessage }}
+        <template v-slot:action="{ attrs }">
+          <v-btn color="orange" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+        </template>
+      </v-snackbar>
     </v-content>
 
     <v-bottom-navigation app grow elevation="24" color="orange" v-if="showBottomBar">
@@ -36,7 +36,7 @@
 
       <v-btn to="overview">
         <span>Lain-lain</span>
-        <v-icon>mdi-information</v-icon>
+        <v-icon>mdi-view-grid</v-icon>
       </v-btn>
     </v-bottom-navigation>
   </v-app>
@@ -51,7 +51,9 @@ export default {
     showAppBar: false,
     showBackButton: false,
     showBottomBar: false,
-    routeName: ""
+    routeName: "",
+    snackbar: false,
+    snackbarMessage: ""
   }),
 
   watch: {
@@ -61,6 +63,15 @@ export default {
       this.changeTitleName();
 
       // console.log(this.$store.state.user);
+    },
+    hardwareData: function(val) {
+      if(val.beratTimbangan < this.dataBerat.kering) {
+        this.snackbar = true;
+        this.snackbarMessage = 'Tolong atur kembali alat anda di "Atur alat"'
+      }else {
+        this.snackbar = false;
+        this.snackbarMessage = ""
+      }
     }
   },
 
@@ -73,7 +84,13 @@ export default {
   computed: {
     messages() {
       return this.$store.state.notificationCount;
-    }
+    },
+    hardwareData() {
+      return this.$store.state.hardwareData;
+    },
+    dataBerat() {
+      return this.$store.state.aturData.berat;
+    },
   },
 
   methods: {
