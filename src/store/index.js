@@ -1,8 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from 'firebase/app';
-import { hardwareDataRef } from '../firebase';
-import { notificationRef } from '../firebase';
+import { aturDataRef, hardwareDataRef, notificationRef, openToolRef } from '../firebase';
 import 'firebase/auth';
 import router from '@/router';
 
@@ -12,12 +11,16 @@ export default new Vuex.Store({
   state: {
     user: null,
     error: null,
-    hardwareData: {
+    aturData: {
       berat: {
         basah: 0,
         kering: 0
       },
       jenisKopi: "",
+    },
+    alatTerbuka: false,
+    hardwareData: {
+      beratTimbangan: 0,
       suhuKelembapan: 0
     },
     notification: {},
@@ -29,6 +32,12 @@ export default new Vuex.Store({
     },
     setError(state, payload) {
       state.error = payload;
+    },
+    getData(state, payload) {
+      state.aturData = payload;
+    },
+    getToolData(state, payload) {
+      state.alatTerbuka = payload;
     },
     getHardwareData(state, payload) {
       state.hardwareData = payload;
@@ -72,19 +81,27 @@ export default new Vuex.Store({
       commit('setUser', null);
       router.replace('/login');
     },
-    getHardwareData({ commit }) {
+    getData({ commit }) {
+      aturDataRef.on('value', data => {
+        commit('getData', data.val());
+      });
       hardwareDataRef.on('value', data => {
         commit('getHardwareData', data.val());
       });
+      openToolRef.on('value', data => {
+        commit('getToolData', data.val());
+      });
     },
-    setHardwareData(commit, payload) {
-      hardwareDataRef.set({
+    setData(commit, payload) {
+      aturDataRef.set({
         berat: payload.berat,
         jenisKopi: payload.jenisKopi,
-        suhuKelembapan: payload.suhuKelembapan
       }).then(
         router.push('/')
       );
+    },
+    setToolData(commit, payload) {
+      openToolRef.set(payload);
     },
     getNotification({ commit }) {
       notificationRef.on('value', data => {
