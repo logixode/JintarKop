@@ -11,31 +11,27 @@
         required
       ></v-select>
 
-      <v-row>
-        <v-col>
-          <v-text-field
-            v-model="berat.basah"
-            :counter="5"
-            name="basah"
-            type="number"
-            color="brown"
-            label="Berat Basah (gr)"
-          ></v-text-field>
-        </v-col>
+      <h5 class="orange--text">Berat Kopi</h5>
 
-        <v-col>
-          <v-text-field
-            v-model="berat.kering"
-            :counter="5"
-            :rules="isFilled"
-            name="kering"
-            type="number"
-            color="brown"
-            label="Berat Kering (gr)"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
+      <v-text-field
+        v-model="beratTimbangan"
+        :counter="5"
+        name="basah"
+        type="number"
+        color="brown"
+        label="Berat Basah (gr)"
+        disabled
+      ></v-text-field>
+      <v-text-field
+        v-model="beratKering"
+        :counter="5"
+        :rules="isFilled"
+        name="kering"
+        type="number"
+        color="brown"
+        label="Berat Kering (gr)"
+        required
+      ></v-text-field>
 
       <v-btn block dark large color="brown" class="mt-5" type="submit">Selesai</v-btn>
     </v-form>
@@ -57,12 +53,14 @@ export default {
   data: () => ({
     listKopi: ["Robusta", "Arabika", "Campuran"],
     jenisKopi: null,
-    berat: {
-      basah: null,
-      kering: null
-    },
+    beratKering: null,
     dialog: false
   }),
+  computed: {
+    beratTimbangan() {
+      return this.$store.state.hardwareData.beratTimbangan;
+    },
+  },
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
@@ -70,10 +68,12 @@ export default {
       }
     },
     agreeSubmit() {
-      this.$store.dispatch("setHardwareData", {
-        berat: this.berat,
+      this.$store.dispatch("setData", {
+        berat: {
+          basah: this.beratTimbangan,
+          kering: this.beratKering
+        },
         jenisKopi: this.jenisKopi,
-        suhuKelembapan: this.$store.state.hardwareData.suhuKelembapan
       });
     }
   }
