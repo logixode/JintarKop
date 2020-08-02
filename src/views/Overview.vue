@@ -1,16 +1,32 @@
 <template>
-  <div>
-    <v-list dense>
-      <!-- <v-list-item link>
-        <v-list-item-icon>
-          <v-icon>mdi-home</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>Home</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>-->
-
+  <v-container class="text-center">
+    <v-row class="mx-1">
+      <v-col cols="6">
+        <v-card color="white" class="pt-10 px-3" height="160" to="/setting">
+          <v-icon x-large>mdi-cog</v-icon>
+          <p class="mt-2">Atur Alat</p>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card color="white" class="pt-10 px-3" height="160" to="/register">
+          <v-icon x-large>mdi-account-multiple-plus</v-icon>
+          <p>Tambah Pengguna Baru</p>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card color="white" class="pt-10 px-3" height="160">
+          <v-icon x-large>mdi-information</v-icon>
+          <p class="mt-2">Tentang Kami</p>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card color="white" class="pt-10 px-3" height="160" @click="signOut">
+          <v-icon x-large>mdi-logout</v-icon>
+          <p class="mt-2">Keluarkan akun</p>
+        </v-card>
+      </v-col>
+    </v-row>
+    <!-- <v-list dense>
       <v-list-item link to="/setting">
         <v-list-item-icon>
           <v-icon>mdi-cog</v-icon>
@@ -40,8 +56,8 @@
           <v-list-item-title>Logout</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-    </v-list>
-  </div>
+    </v-list>-->
+  </v-container>
 </template>
 
 <script>
