@@ -34,7 +34,7 @@
     </div>
     <div class="text-center px-10 my-15 py-5">
       <h5 class="grey--text">Atau login menggunakan metode lain</h5>
-      <v-btn class="mt-2 my-5" tile outlined color="blue" block large>
+      <v-btn class="mt-2 my-5" tile outlined color="blue" block large @click="signInWithGoogle()">
         <v-icon left>mdi-google</v-icon>Masuk dengan Google
       </v-btn>
     </div>
@@ -60,6 +60,9 @@ export default {
           await this.$router.replace({ name: "Home" });
         }
       }
+    },
+    signInWithGoogle() {
+      this.$store.dispatch("signInWithGoogle");
     }
   },
   computed: {

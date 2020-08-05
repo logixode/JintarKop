@@ -63,6 +63,16 @@ export default new Vuex.Store({
           // console.log(err);
         });
     },
+    signInWithGoogle({ commit }) {
+      firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        .then(firebaseUser => {
+          commit('setUser', { email: firebaseUser.user.email });
+          router.push('/');
+        })
+        .catch(error => {
+          commit('setError', error.message);
+        });
+    },
     userSignUp({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(firebaseUser => {
@@ -77,9 +87,11 @@ export default new Vuex.Store({
       commit('setUser', { email: payload.email });
     },
     userSignOut({ commit }) {
-      firebase.auth().signOut();
+      firebase.auth().signOut()
+        .then(() =>
+          router.replace('/login')
+        );
       commit('setUser', null);
-      router.replace('/login');
     },
     getData({ commit }) {
       aturDataRef.on('value', data => {

@@ -64,10 +64,11 @@ firebase.auth()
       store,
       vuetify,
       render: h => h(App),
-      created() {
+      mounted() {
         if (firebaseUser) {
           store.dispatch('autoSignIn', firebaseUser);
         }
+        // console.log(firebaseUser);
       }
     }).$mount("#app");
   });
