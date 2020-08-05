@@ -18,7 +18,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-content>
+    <v-main style="padding: 56px 0px;">
       <router-view />
       <v-snackbar v-model="snackbar">
         {{ snackbarMessage }}
@@ -26,7 +26,7 @@
           <v-btn color="orange" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
         </template>
       </v-snackbar>
-    </v-content>
+    </v-main>
 
     <v-bottom-navigation app grow elevation="24" color="orange" v-if="showBottomBar">
       <v-btn to="/">
@@ -65,12 +65,12 @@ export default {
       // console.log(this.$store.state.user);
     },
     hardwareData: function(val) {
-      if(val.beratTimbangan < this.dataBerat.kering) {
+      if (val.beratTimbangan < this.dataBerat.kering) {
         this.snackbar = true;
-        this.snackbarMessage = 'Tolong atur kembali alat anda di "Atur alat"'
-      }else {
+        this.snackbarMessage = 'Tolong atur kembali alat anda di "Atur alat"';
+      } else {
         this.snackbar = false;
-        this.snackbarMessage = ""
+        this.snackbarMessage = "";
       }
     }
   },
@@ -90,7 +90,7 @@ export default {
     },
     dataBerat() {
       return this.$store.state.aturData.berat;
-    },
+    }
   },
 
   methods: {

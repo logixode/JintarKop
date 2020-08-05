@@ -78,7 +78,7 @@
     </v-btn>
 
     <h4 class="mt-5 mb-2 text--secondary">Informasi Alat</h4>
-    <v-card color="white" class="px-3 pt-5 pb-3 text-center">
+    <v-card color="white" class="px-3 pt-3 pb-3 text-center">
       <v-row>
         <v-col cols="6">
           <h2>
