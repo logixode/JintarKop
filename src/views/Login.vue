@@ -11,9 +11,9 @@
       </v-alert>
       <v-form ref="form" @submit.prevent="signIn" lazy-validation>
         <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          name="email"
+          v-model="user"
+          :rules="nameRules"
+          name="user"
           color="brown"
           label="Nama Panggilan"
           required
@@ -44,7 +44,7 @@
 <script>
 export default {
   data: () => ({
-    email: "",
+    user: "",
     password: "",
     alert: false
   }),
@@ -52,7 +52,7 @@ export default {
     async signIn() {
       if (this.$refs.form.validate()) {
         await this.$store.dispatch("userSignIn", {
-          email: this.email,
+          email: this.user + "@123.com",
           password: this.password
         });
 

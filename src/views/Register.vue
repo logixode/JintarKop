@@ -1,6 +1,8 @@
 <template>
   <v-container class="px-5">
-    <h3>Tambahkan user baru</h3>
+    <v-alert class="error" v-if="alert">
+      <small>{{ error }}</small>
+    </v-alert>
     <v-form ref="form" @submit.prevent="submit" lazy-validation>
       <v-text-field v-model="name" :counter="10" :rules="nameRules" label="Nama Panggilan" required></v-text-field>
 
@@ -14,19 +16,16 @@
       <v-btn block large dark color="brown" class="mt-5" type="submit">Tambahkan</v-btn>
     </v-form>
 
-    <div v-if="error" class="error">{{ error.message }}</div>
-
-    <!-- <form @submit.prevent="submit">
-      <div>
-        <input v-model="email" type="email" name="email" placeholder="email" />
-      </div>
-      <div>
-        <input v-model="password" type="password" name="password" placeholder="password" />
-      </div>
-      <div>
-        <button type="submit">Register</button>
-      </div>
-    </form>-->
+    <v-dialog v-model="dialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class>Apakah data tersebut sudah benar?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="orange darken-1" text @click="dialog = false">Perbaiki</v-btn>
+          <v-btn color="blue darken-1" text @click="agreeSubmit">Lanjutkan</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -34,29 +33,45 @@
 export default {
   data: () => ({
     name: "",
-    password: ""
+    password: "",
+    alert: false,
+    dialog: false
   }),
 
-  methods: {
-    async submit() {
-      this.$refs.form.validate();
+  computed: {
+    error() {
+      return this.$store.state.error;
+    }
+  },
 
-      await this.$store.dispatch("userSignUp", {
-        email: this.email,
+  watch: {
+    error(value) {
+      if (value) {
+        this.alert = true;
+      }
+    },
+    alert(value) {
+      if (!value) {
+        this.$store.commit("setError", null);
+      }
+    }
+  },
+
+  methods: {
+    submit() {
+      if (this.$refs.form.validate()) {
+        this.dialog = true;
+      }
+    },
+    agreeSubmit() {
+      this.$store.dispatch("userSignUp", {
+        email: this.name + "@123.com",
         password: this.password
       });
 
-      // await firebase
-      //   .auth()
-      //   .createUserWithEmailAndPassword(this.email, this.password)
-      //   .then((this.error = ""))
-      //   .catch(err => {
-      //     this.error = err;
-      //     // console.log(err);
-      //   });
-      // if (this.error == "") {
-      //   await this.$router.replace({ name: "Home" });
-      // }
+      if (this.error == "") {
+        this.$router.replace({ name: "Home" });
+      }
     }
   }
 };
