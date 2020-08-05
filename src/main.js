@@ -23,6 +23,7 @@ Vue.mixin(
       ],
       passwordRules: [
         v => !!v || "Password belum diisi",
+        v => (v && v.length >= 6) || "Password harus lebih dari 6 huruf",
         v => (v || "").indexOf(" ") < 0 || "Tidak boleh ada spasi"
       ],
       cantGoBack: true,
