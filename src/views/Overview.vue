@@ -14,7 +14,7 @@
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card color="white" class="pt-10 px-3" height="160">
+        <v-card color="white" class="pt-10 px-3" height="160" to="/about">
           <v-icon x-large>mdi-information</v-icon>
           <p class="mt-2">Tentang Kami</p>
         </v-card>
