@@ -1,8 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import firebase from 'firebase/app';
-import { aturDataRef, hardwareDataRef, notificationRef, openToolRef } from '../firebase';
+import { db } from '../firebase';
 import 'firebase/auth';
+import 'firebase/messaging';
 import router from '@/router';
 
 Vue.use(Vuex);
@@ -94,18 +95,18 @@ export default new Vuex.Store({
       commit('setUser', null);
     },
     getData({ commit }) {
-      aturDataRef.on('value', data => {
+      db.ref('aturData').on('value', data => {
         commit('getData', data.val());
       });
-      hardwareDataRef.on('value', data => {
+      db.ref('dataHardware').on('value', data => {
         commit('getHardwareData', data.val());
       });
-      openToolRef.on('value', data => {
+      db.ref('alatTerbuka').on('value', data => {
         commit('getToolData', data.val());
       });
     },
     setData(commit, payload) {
-      aturDataRef.set({
+      db.ref('aturData').set({
         berat: payload.berat,
         jenisKopi: payload.jenisKopi,
       }).then(
@@ -113,12 +114,18 @@ export default new Vuex.Store({
       );
     },
     setToolData(commit, payload) {
-      openToolRef.set(payload);
+      db.ref('alatTerbuka').set(payload);
     },
     getNotification({ commit }) {
-      notificationRef.on('value', data => {
+      db.ref('notifikasi').on('value', data => {
         commit('getNotification', data.val());
       });
+    },
+    requestPermission() {
+      firebase.messaging().requestPermission()
+        .then(() => firebase.messaging().getToken())
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
     }
   },
   modules: {}
