@@ -7,8 +7,7 @@ module.exports = {
     manifestOptions: {
       background_color: "#fff ",
       orientation: "portrait",
+      gcm_sender_id: "602636053987"
     }
-    // appleMobileW  ebAppCapable: 'yes',
-    // appleMobileWebAppStatusBarStyle: 'white',
   }
 };

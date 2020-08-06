@@ -142,6 +142,9 @@ export default {
   created() {
     this.$store.dispatch("getData");
   },
+  mounted() {
+    this.$store.dispatch("requestPermission");
+  },
   data: () => ({
     progressColor: {
       brown: "#FDAE20",

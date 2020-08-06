@@ -1,15 +1,16 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import firebase from 'firebase/app';
-import { db } from '../firebase';
-import 'firebase/auth';
-import 'firebase/messaging';
-import router from '@/router';
+import firebase from "firebase/app";
+import { db } from "../firebase";
+import "firebase/auth";
+import "firebase/messaging";
+import router from "@/router";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    token: null,
     user: null,
     error: null,
     aturData: {
@@ -34,17 +35,20 @@ export default new Vuex.Store({
     setError(state, payload) {
       state.error = payload;
     },
-    getData(state, payload) {
+    setData(state, payload) {
       state.aturData = payload;
     },
-    getToolData(state, payload) {
+    setToolData(state, payload) {
       state.alatTerbuka = payload;
     },
-    getHardwareData(state, payload) {
+    setHardwareData(state, payload) {
       state.hardwareData = payload;
     },
-    getNotification(state, payload) {
+    setNotification(state, payload) {
       state.notification.push(payload);
+    },
+    setToken(state, payload) {
+      state.token = payload;
     }
   },
   actions: {
@@ -54,78 +58,96 @@ export default new Vuex.Store({
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(
           firebaseUser => {
-            commit('setUser', { email: firebaseUser.user.email });
-            commit('setError', null);
-            router.push('/');
+            commit("setUser", { email: firebaseUser.user.email });
+            commit("setError", null);
+            router.push("/");
           },
           (this.error = ""))
         .catch(err => {
-          commit('setError', err.message);
+          commit("setError", err.message);
           // console.log(err);
         });
     },
     signInWithGoogle({ commit }) {
       firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
         .then(firebaseUser => {
-          commit('setUser', { email: firebaseUser.user.email });
-          router.push('/');
+          commit("setUser", { email: firebaseUser.user.email });
+          router.push("/");
         })
         .catch(error => {
-          commit('setError', error.message);
+          commit("setError", error.message);
         });
     },
     userSignUp({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(firebaseUser => {
-          commit('setUser', { email: firebaseUser.user.email });
-          router.push('/');
+          commit("setUser", { email: firebaseUser.user.email });
+          router.push("/");
         })
         .catch(error => {
-          commit('setError', error.message);
+          commit("setError", error.message);
         });
     },
     autoSignIn({ commit }, payload) {
-      commit('setUser', { email: payload.email });
+      commit("setUser", { email: payload.email });
     },
     userSignOut({ commit }) {
       firebase.auth().signOut()
         .then(() =>
-          router.replace('/login')
+          router.replace("/login")
         );
-      commit('setUser', null);
+      commit("setUser", null);
     },
     getData({ commit }) {
-      db.ref('aturData').on('value', data => {
-        commit('getData', data.val());
+      db.ref("aturData").on("value", data => {
+        commit("setData", data.val());
       });
-      db.ref('dataHardware').on('value', data => {
-        commit('getHardwareData', data.val());
+      db.ref("dataHardware").on("value", data => {
+        commit("setHardwareData", data.val());
       });
-      db.ref('alatTerbuka').on('value', data => {
-        commit('getToolData', data.val());
+      db.ref("alatTerbuka").on("value", data => {
+        commit("setToolData", data.val());
       });
     },
     setData(commit, payload) {
-      db.ref('aturData').set({
+      db.ref("aturData").set({
         berat: payload.berat,
         jenisKopi: payload.jenisKopi,
       }).then(
-        router.push('/')
+        router.push("/")
       );
     },
     setToolData(commit, payload) {
-      db.ref('alatTerbuka').set(payload);
+      db.ref("alatTerbuka").set(payload);
     },
     getNotification({ commit }) {
-      db.ref('notifikasi').on('value', data => {
-        commit('getNotification', data.val());
+      db.ref("notifikasi").on("value", data => {
+        commit("setNotification", data.val());
       });
     },
-    requestPermission() {
+    requestPermission({ dispatch }) {
       firebase.messaging().requestPermission()
-        .then(() => firebase.messaging().getToken())
-        .then(res => console.log(res))
+        .then(() => dispatch("handleTokenRefresh"))
         .catch(err => console.log(err));
+    },
+    handleTokenRefresh({ commit }) {
+      firebase.messaging().getToken()
+        .then(token => {
+          commit("setToken", {
+            token: token,
+            uid: firebase.auth().currentUser.uid
+          });
+          db.ref("token").orderByChild("uid")
+            .equalTo(firebase.auth().currentUser.uid).once('value')
+            .then(snapshot => {
+              if (!snapshot.val()) {
+                db.ref("token").push({
+                  token: token,
+                  uid: firebase.auth().currentUser.uid
+                });
+              }
+            });
+        });
     }
   },
   modules: {}
