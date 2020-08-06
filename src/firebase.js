@@ -15,8 +15,4 @@ var firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 export const db = firebase.database();
-export const aturDataRef = db.ref('aturData');
-export const openToolRef = db.ref('alatTerbuka');
-export const hardwareDataRef = db.ref('dataHardware');
-export const notificationRef = db.ref('notifikasi');
 export default firebaseApp;
