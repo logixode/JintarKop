@@ -5,6 +5,7 @@ import { db } from "../firebase";
 import "firebase/auth";
 import "firebase/messaging";
 import router from "@/router";
+// import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -108,6 +109,9 @@ export default new Vuex.Store({
       db.ref("alatTerbuka").on("value", data => {
         commit("setToolData", data.val());
       });
+      db.ref("token").on("value", data => {
+        commit("setToken", data.val());
+      });
     },
     setData(commit, payload) {
       db.ref("aturData").set({
@@ -130,25 +134,23 @@ export default new Vuex.Store({
         .then(() => dispatch("handleTokenRefresh"))
         .catch(err => console.log(err));
     },
-    handleTokenRefresh({ commit }) {
+    handleTokenRefresh() {
       firebase.messaging().getToken()
         .then(token => {
-          commit("setToken", {
-            token: token,
-            uid: firebase.auth().currentUser.uid
-          });
-          db.ref("token").orderByChild("uid")
-            .equalTo(firebase.auth().currentUser.uid).once('value')
+          // commit("setToken", {
+          //   token: token,
+          // });
+          db.ref("token").orderByChild("token")
+            .equalTo(token).once('value')
             .then(snapshot => {
               if (!snapshot.val()) {
                 db.ref("token").push({
-                  token: token,
-                  uid: firebase.auth().currentUser.uid
+                  token: token
                 });
               }
             });
         });
-    }
+    },
   },
   modules: {}
 });
