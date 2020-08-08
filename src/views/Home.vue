@@ -1,7 +1,7 @@
 <template>
   <v-container class="px-5">
-    <div class="text-center mt-3">
-      <img alt="Jintarkop" class="main-logo mb-3" src="../assets/logo.png" />
+    <div class="text-center">
+      <img alt="Jintarkop" class="main-logo" src="../assets/logo.png" />
     </div>
 
     <!-- <div class="text-center py-5">
@@ -67,13 +67,13 @@
       </v-col>
     </v-row>
 
-    <v-btn v-if="isOpened" outlined block color="orange" class="mt-5" @click="openToolCover">
+    <v-btn v-if="isOpened" outlined block color="orange" class="mt-1" @click="openToolCover">
       <v-icon left>mdi-lock</v-icon>Tutup Alat
     </v-btn>
-    <v-btn v-else block dark color="orange" class="p-2 mt-5" @click="openToolCover">
+    <v-btn v-else block dark color="orange" class="mt-1" @click="openToolCover">
       <v-icon left>mdi-lock-open-variant</v-icon>Buka Alat
     </v-btn>
-    <v-btn block outlined color="brown" class="mt-5" to="/setting">
+    <v-btn block outlined color="brown" class="mt-3" to="/setting">
       <v-icon left>mdi-cog</v-icon>Atur alat
     </v-btn>
 

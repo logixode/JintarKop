@@ -8,7 +8,7 @@
         <span class="font-weight-bold orange--text">Jintarkop</span> (jemuran pintar kopi) adalah suatu aplikasi yang digunakan untuk memonitoring kadar air pada kopi dengan menggunakan sensor timbangan pada alat yang dibuat.
       </p>
       <h4 class="orange--text mt-5">Pembimbing :</h4>
-      <p class="ml-2">Endi Sailul Haq, S.t., M.Kom.</p>
+      <p class="ml-2">Endi Sailul Haq, S.T., M.Kom.</p>
       <h4 class="orange--text mt-5">Anggota Tim :</h4>
       <ol>
         <li>Erisa Zahra Dina (Ketua)</li>
@@ -37,7 +37,7 @@ p {
   margin-bottom: 0;
 }
 .main-logo {
-  height: 120px;
+  height: 160px;
 }
 .v-card p {
   text-align: justify;
