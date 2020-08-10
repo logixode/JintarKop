@@ -1,5 +1,13 @@
 <template>
   <v-container class="mt-1">
+    <template v-if="!this.$store.state.notification">
+      <div class="relative">
+        <div class="vertical-center">
+          <img alt="Jintarkop" class="main-logo" src="../assets/empty-data.svg" />
+          <h3>Oops! Data kosong...</h3>
+        </div>
+      </div>
+    </template>
     <v-card
       color="white"
       class="pt-3 px-4 mb-3"
@@ -12,10 +20,12 @@
         </v-col>
         <v-col cols="10">
           <div class="d-flex justify-space-between">
-            <h4>{{notification.title}}</h4>
-            <small class="mb-0">16.00</small>
+            <h4>{{ notification.title }}</h4>
+            <small
+              class="mb-0"
+            >{{ new Date(notification.timestamp).getHours() }}:{{ new Date(notification.timestamp).getMinutes() }}</small>
           </div>
-          <p>{{notification.body}}</p>
+          <p>{{ notification.body }}</p>
         </v-col>
       </v-row>
     </v-card>
@@ -78,8 +88,27 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .icon {
   height: 30px;
+}
+.main-logo {
+  height: 290px;
+}
+.relative {
+  height: 80vh;
+  position: relative;
+  text-align: center;
+}
+</style>
+
+<style>
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%) translateX(-50%);
+  left: 50%;
 }
 </style>

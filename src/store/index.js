@@ -143,10 +143,12 @@ export default new Vuex.Store({
     setNotification({ commit, dispatch }, payload) {
       if (!payload.title) {
         db.ref("notifikasi").remove();
+        console.log("test");
       } else {
         db.ref("notifikasi").push({
           title: payload.title,
           body: payload.body,
+          timestamp: Date.now()
         }).then(
           commit("addNotification"),
           dispatch("getNotification")
