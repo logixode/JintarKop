@@ -119,9 +119,9 @@ export default new Vuex.Store({
       db.ref("alatTerbuka").on("value", data => {
         commit("setToolData", data.val());
       });
-      db.ref("token").on("value", data => {
-        commit("setToken", data.val());
-      });
+      // db.ref("token").on("value", data => {
+      //   commit("setToken", data.val());
+      // });
     },
     setData(commit, payload) {
       db.ref("aturData").set({
@@ -137,6 +137,7 @@ export default new Vuex.Store({
     getNotification({ commit }) {
       db.ref("notifikasi").on("value", data => {
         commit("getNotification", data.val());
+        console.log(data.val());
       });
     },
     setNotification({ commit, dispatch }, payload) {
