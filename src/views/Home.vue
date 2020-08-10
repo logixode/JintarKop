@@ -105,8 +105,8 @@
           <h2>
             <template v-if="!isOpened">-</template>
             <template v-else>
-              {{ dataBerat.basah/1000 }}
-              <sup>kg</sup>
+              {{ dataBerat.basah }}
+              <sup>g</sup>
             </template>
           </h2>
           <p>Berat Basah</p>
@@ -115,8 +115,8 @@
           <h2>
             <template v-if="!isOpened">-</template>
             <template v-else>
-              {{ dataBerat.kering/1000 }}
-              <sup>kg</sup>
+              {{ dataBerat.kering }}
+              <sup>g</sup>
             </template>
           </h2>
           <p>Berat Kering</p>
