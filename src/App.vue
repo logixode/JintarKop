@@ -194,9 +194,7 @@ export default {
             }
           }
         );
-        console.log(token);
       }
-      console.log(this.$store.state.token);
     },
     notificationClicked() {
       this.$store.commit("notificationClicked");
