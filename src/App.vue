@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "App",
 
@@ -90,11 +91,14 @@ export default {
           kopiHampirKering: true
         });
 
+        let title = "Kopi hampir kering";
+        let body = "Silahkan tunggu beberapa saat lagi";
+        this.sendPushNotification(title, body);
         this.$store.dispatch("setNotification", {
-          title: "Kopi hampir kering",
-          body: "Silahkan tunggu beberapa saat lagi"
+          title: title,
+          body: body
         });
-        console.log("notif2 terkirim");
+        // console.log("notif2 terkirim");
       } else if (
         percentage >= 0 &&
         percentage <= 5 &&
@@ -105,11 +109,14 @@ export default {
           kopiHampirKering: true
         });
 
+        let title = "Kopi sudah kering";
+        let body = "Silahkan angkat kopi dari alat segera";
+        this.sendPushNotification(title, body);
         this.$store.dispatch("setNotification", {
-          title: "Kopi sudah kering",
-          body: "Silahkan angkat kopi pada alat"
+          title: title,
+          body: body
         });
-        console.log("notif1 terkirim");
+        // console.log("notif1 terkirim");
       } else if (
         percentage >= 0 &&
         percentage <= 25 &&
@@ -126,7 +133,7 @@ export default {
             kopiHampirKering: false,
             kopiKering: false
           });
-          console.log("tidak ada yang dikirim");
+          // console.log("tidak ada yang dikirim");
         }
       } else {
         if (
@@ -137,7 +144,7 @@ export default {
             kopiKering: false,
             kopiHampirKering: false
           });
-          console.log("tidak ada yang dikirim");
+          // console.log("tidak ada yang dikirim");
         }
         // this.param1 = true;
         // this.param2 = true;
@@ -165,6 +172,32 @@ export default {
   },
 
   methods: {
+    sendPushNotification(title, body) {
+      for (let tokens in this.$store.state.token) {
+        let token = this.$store.state.token[tokens].token;
+
+        axios.post(
+          "https://fcm.googleapis.com/fcm/send",
+          {
+            to: token,
+            notification: {
+              title: title,
+              body: body,
+              icon: "./img/icons/android-chrome-192x192.png"
+            }
+          },
+          {
+            headers: {
+              Authorization:
+                "key=AAAAjE_obeM:APA91bHqhE6HqEW0RNby49HaotdruvHWKyCAfrP9LICM9B_cO8A1dAZpTGIBoGZzxaKe_Zt60nblmM2DEkL-ySAYu_cPSU7NBd7s9EljEARH7ZwfwDbXEyESFkotJnHOZS8S0wIXA54P",
+              "Content-Type": "application/json"
+            }
+          }
+        );
+        console.log(token);
+      }
+      console.log(this.$store.state.token);
+    },
     notificationClicked() {
       this.$store.commit("notificationClicked");
     },
