@@ -74,7 +74,7 @@ export default {
         },
         jenisKopi: this.jenisKopi
       });
-      this.$store.dispatch("setNotification", null);
+      this.$store.dispatch("setNotification", {});
       this.$store.commit("notificationClicked");
     }
   }
