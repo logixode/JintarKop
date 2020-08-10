@@ -119,9 +119,9 @@ export default new Vuex.Store({
       db.ref("alatTerbuka").on("value", data => {
         commit("setToolData", data.val());
       });
-      // db.ref("token").on("value", data => {
-      //   commit("setToken", data.val());
-      // });
+      db.ref("token").on("value", data => {
+        commit("setToken", data.val());
+      });
     },
     setData(commit, payload) {
       db.ref("aturData").set({
@@ -145,14 +145,20 @@ export default new Vuex.Store({
         db.ref("notifikasi").remove();
         console.log("test");
       } else {
-        db.ref("notifikasi").push({
-          title: payload.title,
-          body: payload.body,
-          timestamp: Date.now()
-        }).then(
-          commit("addNotification"),
-          dispatch("getNotification")
-        );
+        db.ref("notifikasi").orderByChild("title")
+          .equalTo(payload.title).on('value')
+          .then(snapshot => {
+            if (!snapshot.val()) {
+              db.ref("notifikasi").push({
+                title: payload.title,
+                body: payload.body,
+                timestamp: Date.now()
+              }).then(
+                commit("addNotification"),
+                dispatch("getNotification")
+              );
+            }
+          });
       }
     },
     infoNotifSend({ commit }) {
