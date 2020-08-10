@@ -20,7 +20,6 @@
         type="number"
         color="brown"
         label="Berat Basah (gr)"
-        disabled
       ></v-text-field>
       <v-text-field
         v-model="beratKering"
@@ -59,7 +58,7 @@ export default {
   computed: {
     beratTimbangan() {
       return this.$store.state.hardwareData.beratTimbangan;
-    },
+    }
   },
   methods: {
     submit() {
@@ -73,8 +72,10 @@ export default {
           basah: this.beratTimbangan,
           kering: this.beratKering
         },
-        jenisKopi: this.jenisKopi,
+        jenisKopi: this.jenisKopi
       });
+      this.$store.dispatch("setNotification", null);
+      this.$store.commit("notificationClicked");
     }
   }
 };

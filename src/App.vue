@@ -11,7 +11,7 @@
       <v-toolbar-title>{{ routeName }}</v-toolbar-title>
       <v-spacer />
 
-      <v-btn icon to="/notification">
+      <v-btn icon to="/notification" @click="notificationClicked">
         <v-badge :value="messages" color="red" dot overlap>
           <v-icon>mdi-bell</v-icon>
         </v-badge>
@@ -53,7 +53,9 @@ export default {
     showBottomBar: false,
     routeName: "",
     snackbar: false,
-    snackbarMessage: ""
+    snackbarMessage: "",
+    param1: true,
+    param2: true
   }),
 
   watch: {
@@ -72,6 +74,74 @@ export default {
         this.snackbar = false;
         this.snackbarMessage = "";
       }
+
+      const percentage =
+        ((val.beratTimbangan - this.dataBerat.kering) /
+          (this.dataBerat.basah - this.dataBerat.kering)) *
+        100;
+
+      if (
+        percentage > 5 &&
+        percentage <= 25 &&
+        !this.$store.state.notifSend.kopiHampirKering
+      ) {
+        this.$store.dispatch("notifSend", {
+          kopiKering: false,
+          kopiHampirKering: true
+        });
+
+        this.$store.dispatch("setNotification", {
+          title: "Kopi hampir kering",
+          body: "Silahkan tunggu beberapa saat lagi"
+        });
+        console.log("notif2 terkirim");
+      } else if (
+        percentage >= 0 &&
+        percentage <= 5 &&
+        !this.$store.state.notifSend.kopiKering
+      ) {
+        this.$store.dispatch("notifSend", {
+          kopiKering: true,
+          kopiHampirKering: true
+        });
+
+        this.$store.dispatch("setNotification", {
+          title: "Kopi sudah kering",
+          body: "Silahkan angkat kopi pada alat"
+        });
+        console.log("notif1 terkirim");
+      } else if (
+        percentage >= 0 &&
+        percentage <= 25 &&
+        (this.$store.state.notifSend.kopiHampirKering ||
+          this.$store.state.notifSend.kopiKering)
+      ) {
+        console.log("sudah dikirim sebelumnya");
+      } else if (percentage > 25 && percentage <= 101) {
+        if (
+          this.$store.state.notifSend.kopiHampirKering ||
+          this.$store.state.notifSend.kopiKering
+        ) {
+          this.$store.dispatch("notifSend", {
+            kopiHampirKering: false,
+            kopiKering: false
+          });
+          console.log("tidak ada yang dikirim");
+        }
+      } else {
+        if (
+          this.$store.state.notifSend.kopiHampirKering ||
+          this.$store.state.notifSend.kopiKering
+        ) {
+          this.$store.commit("infoNotifSend", {
+            kopiKering: false,
+            kopiHampirKering: false
+          });
+          console.log("tidak ada yang dikirim");
+        }
+        // this.param1 = true;
+        // this.param2 = true;
+      }
     }
   },
 
@@ -79,6 +149,7 @@ export default {
     this.changeTitleName();
     this.canGoBack();
     this.showBar();
+    this.$store.dispatch("infoNotifSend");
   },
 
   computed: {
@@ -94,6 +165,9 @@ export default {
   },
 
   methods: {
+    notificationClicked() {
+      this.$store.commit("notificationClicked");
+    },
     showBar() {
       let route = this.$route;
 

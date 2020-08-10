@@ -26,7 +26,8 @@ export default new Vuex.Store({
       beratTimbangan: 0,
       suhuKelembapan: 0
     },
-    notification: {},
+    notification: [],
+    notifSend: {},
     notificationCount: 0
   },
   mutations: {
@@ -45,11 +46,20 @@ export default new Vuex.Store({
     setHardwareData(state, payload) {
       state.hardwareData = payload;
     },
-    setNotification(state, payload) {
-      state.notification.push(payload);
+    getNotification(state, payload) {
+      state.notification = payload;
+    },
+    addNotification(state) {
+      state.notificationCount++;
     },
     setToken(state, payload) {
       state.token = payload;
+    },
+    notificationClicked(state) {
+      state.notificationCount = 0;
+    },
+    infoNotifSend(state, payload) {
+      state.notifSend = payload;
     }
   },
   actions: {
@@ -126,7 +136,35 @@ export default new Vuex.Store({
     },
     getNotification({ commit }) {
       db.ref("notifikasi").on("value", data => {
-        commit("setNotification", data.val());
+        commit("getNotification", data.val());
+      });
+    },
+    setNotification({ commit, dispatch }, payload) {
+      if (!payload.title) {
+        db.ref("notifikasi").remove();
+      } else {
+        db.ref("notifikasi").push({
+          title: payload.title,
+          body: payload.body,
+        }).then(
+          commit("addNotification"),
+          dispatch("getNotification")
+        );
+      }
+    },
+    infoNotifSend({ commit }) {
+      db.ref("notifSend").on("value", data => {
+        commit("infoNotifSend", data.val());
+      });
+    },
+    notifSend({ commit }, payload) {
+      db.ref("notifSend").set({
+        kopiHampirKering: payload.kopiHampirKering,
+        kopiKering: payload.kopiKering
+      });
+      commit("infoNotifSend", {
+        kopiHampirKering: payload.kopiHampirKering,
+        kopiKering: payload.kopiKering
       });
     },
     requestPermission({ dispatch }) {
