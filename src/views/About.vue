@@ -27,31 +27,7 @@
 </template>
 
 <script >
-import axios from "axios";
-export default {
-  data: () => ({}),
-  mounted() {
-    axios.post(
-      "https://fcm.googleapis.com/fcm/send",
-      {
-        to:
-          "etF4SPFRZ4BIaFc9YNZMTB:APA91bEYwei0meKd3fEbairCMqrFo4Q91YnAYUsYd9zzovMHbBUYKA24j94j7_bFiqbCxD6HdMxju4dzRiEmvEyiJW8B168f9CAvJZtyJVkz8u3os_Gurm3CTHiWgbSueA5nRFEyZwl6",
-        notification: {
-          title: "Kopi sudah kering",
-          body: "Silahkan angkat kopi pada alat",
-          icon: "./img/icons/android-chrome-192x192.png"
-        }
-      },
-      {
-        headers: {
-          Authorization:
-            "key=AAAAjE_obeM:APA91bHqhE6HqEW0RNby49HaotdruvHWKyCAfrP9LICM9B_cO8A1dAZpTGIBoGZzxaKe_Zt60nblmM2DEkL-ySAYu_cPSU7NBd7s9EljEARH7ZwfwDbXEyESFkotJnHOZS8S0wIXA54P",
-          "Content-Type": "application/json"
-        }
-      }
-    );
-  }
-};
+export default {};
 </script>
 
 <style scoped>
