@@ -14,6 +14,7 @@ export default new Vuex.Store({
     token: null,
     user: null,
     error: null,
+    loading: false,
     aturData: {
       berat: {
         basah: 0,
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     setError(state, payload) {
       state.error = payload;
+    },
+    setLoading(state, payload) {
+      state.loading = payload;
     },
     setData(state, payload) {
       state.aturData = payload;
@@ -64,6 +68,7 @@ export default new Vuex.Store({
   },
   actions: {
     userSignIn({ commit }, payload) {
+      commit('setLoading', true);
       firebase
         .auth()
         .signInWithEmailAndPassword(payload.email, payload.password)
@@ -71,10 +76,12 @@ export default new Vuex.Store({
           firebaseUser => {
             commit("setUser", { email: firebaseUser.user.email });
             commit("setError", null);
+            commit('setLoading', false);
             router.push("/");
           },
           (this.error = ""))
         .catch(err => {
+          commit('setLoading', false);
           commit("setError", err.message);
           // console.log(err);
         });
@@ -131,8 +138,9 @@ export default new Vuex.Store({
         router.push("/")
       );
     },
-    setToolData(commit, payload) {
-      db.ref("alatTerbuka").set(payload);
+    setToolData({ commit }, payload) {
+      commit('setLoading', true);
+      db.ref("alatTerbuka").set(payload).then(() => commit('setLoading', false));
     },
     getNotification({ commit }) {
       db.ref("notifikasi").on("value", data => {

@@ -29,7 +29,16 @@
           label="Password"
           required
         ></v-text-field>
-        <v-btn block dark large color="brown" class="mt-5" type="submit">Login</v-btn>
+        <v-btn
+          v-if="loading"
+          disabled
+          block
+          large
+          color="grey"
+          class="mt-5"
+          type="submit"
+        >Loading...</v-btn>
+        <v-btn v-else block dark large color="brown" class="mt-5" type="submit">Login</v-btn>
       </v-form>
     </div>
     <div class="text-center px-10 my-15 py-5">
@@ -68,6 +77,9 @@ export default {
   computed: {
     error() {
       return this.$store.state.error;
+    },
+    loading() {
+      return this.$store.state.loading;
     }
   },
   watch: {

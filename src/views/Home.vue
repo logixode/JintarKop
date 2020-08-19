@@ -67,12 +67,35 @@
       </v-col>
     </v-row>
 
-    <v-btn v-if="isOpened" outlined block color="orange" class="mt-1" @click="openToolCover">
+    <v-btn
+      v-if="isOpened && !loading"
+      outlined
+      block
+      color="orange"
+      class="mt-1"
+      @click="openToolCover"
+    >
       <v-icon left>mdi-lock</v-icon>Tutup Alat
     </v-btn>
-    <v-btn v-else block dark color="orange" class="mt-1" @click="openToolCover">
+    <v-btn
+      v-else-if="!isOpened && !loading"
+      block
+      dark
+      color="orange"
+      class="mt-1"
+      @click="openToolCover"
+    >
       <v-icon left>mdi-lock-open-variant</v-icon>Buka Alat
     </v-btn>
+    <v-btn
+      v-else
+      disabled
+      outlined
+      block
+      color="orange"
+      class="mt-1"
+      @click="openToolCover"
+    >Loading...</v-btn>
     <v-btn block outlined color="brown" class="mt-3" to="/setting">
       <v-icon left>mdi-cog</v-icon>Atur alat
     </v-btn>
@@ -180,6 +203,9 @@ export default {
     },
     isOpened() {
       return this.$store.state.alatTerbuka;
+    },
+    loading() {
+      return this.$store.state.loading;
     }
   },
   methods: {
