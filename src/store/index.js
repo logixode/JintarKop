@@ -145,16 +145,15 @@ export default new Vuex.Store({
     getNotification({ commit }) {
       db.ref("notifikasi").on("value", data => {
         commit("getNotification", data.val());
-        console.log(data.val());
+        // console.log(data.val());
       });
     },
     setNotification({ commit, dispatch }, payload) {
       if (!payload.title) {
         db.ref("notifikasi").remove();
-        console.log("test");
       } else {
         db.ref("notifikasi").orderByChild("title")
-          .equalTo(payload.title).on('value')
+          .equalTo(payload.title).once('value')
           .then(snapshot => {
             if (!snapshot.val()) {
               db.ref("notifikasi").push({
@@ -164,7 +163,7 @@ export default new Vuex.Store({
               }).then(
                 commit("addNotification"),
                 dispatch("getNotification")
-              );
+              ).catch(err => console.log(err));
             }
           });
       }

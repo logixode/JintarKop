@@ -42,7 +42,7 @@ export default {
       brown: "#FDAE20",
       blue: "#108fca"
     },
-    notification: {}
+    notifications: {}
   }),
   computed: {
     kadarAir() {
@@ -76,9 +76,6 @@ export default {
     }
   },
   methods: {
-    notification() {
-      this.notification = this.$store.state.notification;
-    },
     openToolCover() {
       if (this.isOpened) {
         this.$store.dispatch("setToolData", false);
