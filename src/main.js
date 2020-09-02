@@ -7,7 +7,9 @@ import axios from "axios";
 import vuetify from "./plugins/vuetify";
 import './firebase';
 import firebase from 'firebase/app';
+import VueOffline from 'vue-offline';
 
+Vue.use(VueOffline);
 Vue.mixin(
   {
     data: () => ({

@@ -1,51 +1,60 @@
 <template>
   <v-app class="red">
-    <v-app-bar app elevation="0" v-if="showAppBar">
-      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
+    <offline v-if="!isOnline" />
+    <template v-else>
+      <v-app-bar app elevation="0" v-if="showAppBar">
+        <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
 
-      <v-btn icon large v-if="showBackButton" @click="goBack()">
-        <v-icon v-if="cantGoBack">mdi-home</v-icon>
-        <v-icon v-else>mdi-chevron-left</v-icon>
-      </v-btn>
-      <!-- <v-spacer /> -->
-      <v-toolbar-title>{{ routeName }}</v-toolbar-title>
-      <v-spacer />
+        <v-btn icon large v-if="showBackButton" @click="goBack()">
+          <v-icon v-if="cantGoBack">mdi-home</v-icon>
+          <v-icon v-else>mdi-chevron-left</v-icon>
+        </v-btn>
+        <!-- <v-spacer /> -->
+        <v-toolbar-title>{{ routeName }}</v-toolbar-title>
+        <v-spacer />
 
-      <v-btn icon to="/notification" @click="notificationClicked">
-        <v-badge :value="messages" color="red" dot overlap>
-          <v-icon>mdi-bell</v-icon>
-        </v-badge>
-      </v-btn>
-    </v-app-bar>
+        <v-btn icon to="/notification" @click="notificationClicked">
+          <v-badge :value="messages" color="red" dot overlap>
+            <v-icon>mdi-bell</v-icon>
+          </v-badge>
+        </v-btn>
+      </v-app-bar>
 
-    <v-main style="padding: 56px 0px;">
-      <router-view />
-      <v-snackbar v-model="snackbar">
-        {{ snackbarMessage }}
-        <template v-slot:action="{ attrs }">
-          <v-btn color="orange" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
-        </template>
-      </v-snackbar>
-    </v-main>
+      <v-main style="padding: 56px 0px;">
+        <router-view />
+        <v-snackbar v-model="snackbar">
+          {{ snackbarMessage }}
+          <template v-slot:action="{ attrs }">
+            <v-btn color="orange" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+          </template>
+        </v-snackbar>
+      </v-main>
 
-    <v-bottom-navigation app grow elevation="24" color="orange" v-if="showBottomBar">
-      <v-btn to="/">
-        <span>Utama</span>
-        <v-icon>mdi-home</v-icon>
-      </v-btn>
+      <v-bottom-navigation app grow elevation="24" color="orange" v-if="showBottomBar">
+        <v-btn to="/">
+          <span>Utama</span>
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
 
-      <v-btn to="overview">
-        <span>Lain-lain</span>
-        <v-icon>mdi-view-grid</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
+        <v-btn to="overview">
+          <span>Lain-lain</span>
+          <v-icon>mdi-view-grid</v-icon>
+        </v-btn>
+      </v-bottom-navigation>
+    </template>
   </v-app>
 </template>
 
 <script>
 import axios from "axios";
+import Offline from "@/components/Offline";
+
 export default {
   name: "App",
+
+  components: {
+    Offline
+  },
 
   data: () => ({
     dark: true,
