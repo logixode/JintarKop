@@ -223,8 +223,8 @@ export default {
   methods: {
     openToolCover() {
       if (this.isOpened) {
-        this.$store.dispatch("setToolData", false);
-      } else this.$store.dispatch("setToolData", true);
+        this.$store.dispatch("setToolData", 0);
+      } else this.$store.dispatch("setToolData", 1);
     }
   }
   // components: {
