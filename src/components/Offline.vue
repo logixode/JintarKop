@@ -7,7 +7,7 @@
 
       <p class="my-2">Atau tarik halaman kebawah</p>
 
-      <v-btn block outlined color="brown" class="mt-3" to="/setting">
+      <v-btn block outlined color="brown" class="mt-3" @click="$router.go()">
         <v-icon left>mdi-refresh</v-icon>Refresh
       </v-btn>
     </div>
