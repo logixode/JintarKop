@@ -103,7 +103,7 @@
     <h4 class="mt-5 mb-2 text--secondary">Informasi Alat</h4>
     <v-card color="white" class="px-3 pt-3 pb-3 text-center">
       <v-row>
-        <v-col cols="6">
+        <v-col cols="12">
           <h2>
             <template v-if="!isOpened">-</template>
             <template v-else>
@@ -112,17 +112,6 @@
             </template>
           </h2>
           <p>Berat Saat Ini</p>
-        </v-col>
-        <v-col cols="6">
-          <h2>
-            <template v-if="!isOpened">-</template>
-            <template v-else>
-              {{ hardwareData.suhuKelembapan }}
-              <sup>&#8451;</sup>
-            </template>
-          </h2>
-
-          <p>Suhu Kelembapan</p>
         </v-col>
         <v-col cols="6">
           <h2>
@@ -143,6 +132,29 @@
             </template>
           </h2>
           <p>Berat Kering</p>
+        </v-col>
+        <v-col cols="6">
+          <h2>
+            <template v-if="!isOpened">-</template>
+            <template v-else>
+              {{ hardwareData.kelembaban }}
+              <!-- <sup>&#8451;</sup> -->
+              <sup>RH</sup>
+            </template>
+          </h2>
+
+          <p>Kelembapan</p>
+        </v-col>
+        <v-col cols="6">
+          <h2>
+            <template v-if="!isOpened">-</template>
+            <template v-else>
+              {{ hardwareData.suhuKelembapan }}
+              <sup>&#8451;</sup>
+            </template>
+          </h2>
+
+          <p>Intensitas Suhu</p>
         </v-col>
       </v-row>
     </v-card>
